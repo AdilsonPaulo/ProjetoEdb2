@@ -11,7 +11,11 @@ public class TreeView
         tree.insert(60);
         tree.insert(80);
         
+        tree.search(tree.root, 40);
+        
         tree.delete(40);
+        
+        tree.search(tree.root, 40);
         
         System.out.println("Enesimo Elemento: " + tree.enesimoElemento(3));
         System.out.println("Posição do Elemento: " + tree.posicao(60));
