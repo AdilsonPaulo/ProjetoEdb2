@@ -1,4 +1,4 @@
-public class Main
+public class TreeView
 {
 	public static void main(String[] args) {
         BinaryTreeSearch tree = new BinaryTreeSearch();
