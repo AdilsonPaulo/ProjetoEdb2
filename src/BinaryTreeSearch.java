@@ -1,9 +1,15 @@
+import java.lang.Math;
+
 public class BinaryTreeSearch {
 
-    Node root;
+    private Node root;
     
     public BinaryTreeSearch(){
         root = null;
+    }
+    
+    public Node getRoot(){
+        return this.root;
     }
     
     public void insert(int key){
@@ -111,25 +117,91 @@ public class BinaryTreeSearch {
     
     public int posicao(int x) {
         Counter count = new Counter();
-        return posicaoRec(root, x, count);
+        int s = posicaoRec(root, x, count);
+        if(x == -1){
+            System.out.println("Elemento não encontrado!");
+        }
+        return s;
     }
     
-    int posicaoRec(Node root, int x, Counter count) {
+    public int posicaoRec(Node root, int x, Counter count) {
         if (root != null) {
             int posicaoEsquerda = posicaoRec(root.left, x, count);
             if (posicaoEsquerda != -1) {
                 return posicaoEsquerda;
+            }
+
+            count.count++;
+            if (root.key == x) {
+                return count.count;
+            }
+
+            return posicaoRec(root.right, x, count);
         }
-
-        count.count++;
-        if (root.key == x) {
-            return count.count;
-        }
-
-        return posicaoRec(root.right, x, count);
-    }
-
         return -1; 
     }
     
+    public double media (int x){
+        Node temp = search(root, x);
+        Counter count = new Counter();
+        double soma = countElements(temp, count, 1);
+        count.count *= 0;
+        double numElements = countElements(temp, count, 0);
+        return soma/numElements;
+    }
+    
+    public int mediana(){
+        Counter count = new Counter();
+        double numElements = countElements(root, count, 0);
+        
+        return medianaRec(root, numElements);
+    }
+    
+    public int medianaRec(Node root, double numElements){
+        int p = posicao(root.key);
+        if(p == Math.ceil(numElements/2)){
+            return root.key;
+        }
+        else{
+            if(p < Math.ceil(numElements/2)){
+                return medianaRec(root.right, numElements);
+            }
+            else{
+                return medianaRec(root.left, numElements);
+            }
+        }
+    }
+    
+    public double countElements(Node root, Counter count, int x){
+        if(root != null){
+            if(x == 1){
+                count.count+= root.key;
+            }
+            else{
+                count.count++;
+            }
+            double left = countElements(root.left, count, x);
+            if(left != count.count){
+                return left;
+            }
+            
+            return countElements(root.right, count, x);
+        }
+        
+        return (double)count.count;
+    }
+    
+    public String pre_ordem(){
+        StringBuilder sb = new StringBuilder();
+        preOrdemRec(root, sb);
+        return sb.toString();
+    }
+    
+    public void preOrdemRec(Node root, StringBuilder sb){
+        if(root != null){
+            sb.append(root.key).append(" ");
+            preOrdemRec(root.left, sb);
+            preOrdemRec(root.right, sb);
+        }
+    }
 }    
